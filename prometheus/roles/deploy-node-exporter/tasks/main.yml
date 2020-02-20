@@ -38,4 +38,4 @@
     job: "/srv/prometheus/git_commit.sh"
 
 - name: run Docker-compose ansible
-  shell: docker-compose -f /srv/prometheus/docker-compose.yml up -d
+  shell: docker-compose -f /srv/prometheus/docker-node_exporter.yml up -d

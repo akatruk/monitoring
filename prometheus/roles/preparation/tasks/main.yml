@@ -7,17 +7,17 @@
       - python3-pip
       - git
 
-- name: Install yum utils
-  yum:
-    name: yum-utils¡
-    state: latest
+# - name: Install yum utils
+#   yum:
+#     name: yum-utils¡
+# #     state: latest
 
-  yum: name={{ item }} state=latest
-  with_items:
+#   yum: name={{ item }} state=latest
+#   with_items:
       # - docker-compose
-      - python3-pip
-      - epel-release
-      - device-mapper-persistent-data
+      # - python3-pip
+      # - epel-release
+#       - device-mapper-persistent-data
 
 - name: Install device-mapper-persistent-data
   yum:
@@ -47,7 +47,7 @@
   become: yes
 
 - name: Install Docker
-  package:
+  yum:
     name: docker-ce
     state: latest
   become: yes
@@ -76,7 +76,7 @@
   shell: curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   become: yes
 
-- name: grand permissions
+- name: grant permissions
   shell: chmod +x /usr/local/bin/docker-compose
   become: yes
 
@@ -85,6 +85,11 @@
   with_items:
       - docker-compose
 
+# - name: Install docker-py
+#   pip3: 
+#     name: docker-py
+  # executable: pip3.6
+  # virtualenv_command: /usr/bin/python3
 
 
 # - name: install key
@@ -148,11 +153,6 @@
 #   with_items:
 #       - docker-compose
 
-# - name: Install docker-py
-#   pip: 
-#     name: docker-py
-#   executable: pip3.6
-#   virtualenv_command: /usr/bin/python3
 
 
 
