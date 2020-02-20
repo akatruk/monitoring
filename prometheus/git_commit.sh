@@ -2,4 +2,4 @@
 commit_message="auto commit"
 git add . -A
 git commit -m "$commit_message"
-git push orogin master
+git push origin master
