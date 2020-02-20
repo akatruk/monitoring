@@ -1,0 +1,7 @@
+  environment:
+    env_user: mp-admin
+    env_password: wvN9cZSo5ww
+    env_host: https://vcd.sbercloud.ru/
+    env_org: FNFRO
+    env_api_version: 30.0
+    env_verify_ssl_certs: true

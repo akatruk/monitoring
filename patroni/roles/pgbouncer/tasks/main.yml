@@ -1,0 +1,58 @@
+---     
+- name: Create DATABASE {{database_name}}
+  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE DATABASE {{database_name}};"
+  become_user: postgres
+  run_once: true
+
+- name: Create USER {{user_name}}
+  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE USER {{ user_name }} WITH PASSWORD '{{ password_database }}'"
+  become_user: postgres
+  run_once: true
+
+- name: Grant USER {{user_name}}
+  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -Atq -h {{virtual_ip}} -U postgres -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE {{ database_name }} to {{user_name}}"
+  become_user: postgres
+  run_once: true
+
+- name: Install pgbouncer centos
+  yum:
+    name: pgbouncer
+    state: latest
+
+- name: Create file
+  file:
+    path: /etc/pgbouncer/userlist.txt
+    state: touch
+    owner: postgres
+    group: postgres
+
+- name: Run commands on all nodes
+  shell: psql -Atq -h 127.0.0.1 -U postgres -d postgres -c "SELECT concat('\"', usename, '\" \"', passwd, '\"') FROM pg_shadow" -o /etc/pgbouncer/userlist.txt
+  become_user: postgres
+
+- name: Insert into config file
+  blockinfile:
+    path: /etc/pgbouncer/pgbouncer.ini
+    block: |
+        [databases]
+        {{ database_name }}= host={{virtual_ip}} port=5432 dbname={{ database_name }}
+        [pgbouncer]
+        logfile = /var/log/pgbouncer/pgbouncer.log
+        pidfile = /var/run/pgbouncer/pgbouncer.pid
+        listen_addr = *
+        listen_port = 6432
+        auth_type = md5
+        auth_hba_file = /etc/pgbouncer/pg_hba.conf
+        auth_file = /etc/pgbouncer/userlist.txt
+        admin_users = postgres
+        stats_users = postgres
+        pool_mode = session
+        server_reset_query = DISCARD ALL
+        max_client_conn = 300
+        default_pool_size = 280
+        reserve_pool_size = 10
+        reserve_pool_timeout = 5
+        ignore_startup_parameters = extra_float_digits
+
+- name: Start as service
+  service: name=pgbouncer state=started enabled=yes

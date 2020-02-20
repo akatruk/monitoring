@@ -1,0 +1,84 @@
+---
+
+- name: Install package with multiple repos enabled
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Download PosrgreSQL wget
+  yum: name=https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm state=present
+
+- name: Install PostgreSQL & python
+  yum: name={{ item }} state=latest
+  with_items:
+    - postgresql11
+    - postgresql11-server
+    - postgresql11-contrib
+    - git
+    - python-pip
+    - python-psycopg2
+    - gcc
+    - python
+    - python-devel
+    - etcd
+
+- name: checkout patroni
+  git: repo=https://github.com/zalando/patroni.git dest=/opt/patroni
+
+- name: create /etc/patroni
+  file: state=directory dest=/etc/patroni
+
+- name: put postgres.yml
+  template: src=postgres0.yml dest=/etc/patroni/postgres.yml backup=yes
+
+- name: pip update
+  command: pip install --upgrade pip setuptools wheel
+
+- name: install python packages
+  pip: name={{ item }}
+  with_items:
+    - python-etcd
+    - python-consul
+    - boto
+    - mock
+    - kazoo
+    - click
+    - tzlocal
+    - prettytable
+    - PyYAML
+    - python-dateutil
+    - psutil
+    - patroni
+    - asn1crypto
+    - attrs
+    - Automat
+    - blinker
+    - colorama
+    - constantly
+    - cryptography
+    - zipp
+    - wcwidth
+    - psycopg2-binary
+    - py
+  executable: pip3.6
+  virtualenv_command: /usr/bin/python3
+
+- name: put patroni.service systemd unit
+  template: src=patroni.service dest=/etc/systemd/system/patroni.service backup=yes
+
+# - name: open firewall
+#   shell: firewall-cmd --permanent --add-port=5432/tcp
+
+# - name: reload firewall
+#   shell: firewall-cmd --reload
+
+- name: Start etcd and Enable as service
+  service: name=etcd.service state=started enabled=yes
+
+- name: Reload daemon definitions
+  command: /usr/bin/systemctl daemon-reload
+
+- name: restart
+  service: name=patroni state=restarted enabled=yes
+  
+

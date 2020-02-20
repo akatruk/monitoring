@@ -1,0 +1,9 @@
+
+
+[x-chkalov-db]
+x-chkalov-db01 ansible_ssh_host=10.1.200.13
+x-chkalov-db02 ansible_ssh_host=10.1.200.14
+x-chkalov-db03 ansible_ssh_host=10.1.200.15
+
+[monitor01]
+monitor01 ansible_ssh_host=10.1.200.13

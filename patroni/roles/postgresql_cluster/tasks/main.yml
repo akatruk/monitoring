@@ -1,0 +1,72 @@
+---
+  - name: Include all default extension files in vars/all and all nested directories and save the output in test. (2.2)
+    include_vars: vars.yml
+
+  - name: install python-psycopg2
+    yum: name={{ item }} state=installed
+    with_items:
+     - python-psycopg2
+     - postgresql-devel
+
+  - name: Add in pg_hba.conf
+    lineinfile:
+     path: /var/lib/pgsql/{{ env_type }}/{{ project_name }}/data/pg_hba.conf
+     line: 'host replication all "{{ network_pg }}" trust'
+    when: ansible_default_ipv4.address == "{{ ip_master }}"
+   
+  - name: create slot replica0 (master)
+    postgresql_query:
+     db: postgres
+     query: SELECT pg_create_physical_replication_slot('replica0');
+
+  - name: create slot replica1 (master)
+    postgresql_query:
+     db: postgres
+     query: SELECT pg_create_physical_replication_slot('replica1');
+
+  - name: Restart service PostgreSQL (master)
+    service: 
+      name: postgresql-11.service
+      state: restarted
+    when: ansible_default_ipv4.address == "{{ ip_master }}"
+
+  - name: stop PostgreSQL (slave)
+    service: 
+      name: postgresql-11.service
+      state: stopped
+    when: ansible_default_ipv4.address == "{{ ip_slave }}"
+
+  - name: clean PGDATA (slave)
+    file: 
+     path: '/var/lib/pgsql/{{ env_type }}/{{ project_name }}/data' 
+     state: absent
+    when: ansible_default_ipv4.address == "{{ item }}"
+    with_items: "{{ ip_slave }}"
+
+  - name: Run commands on slave (0) node
+    command: 'pg_basebackup -h {{ ip_master }} -D /var/lib/pgsql/{{ env_type }}/{{ project_name }}/data -R --slot=replica0'
+    become: true
+    become_user: postgres
+    when: ansible_default_ipv4.address == "{{ item }}"
+    with_items: "{{ ip_slave }}"
+
+  - name: Run commands on slave (1) node
+    command: 'pg_basebackup -h {{ ip_master }} -D /var/lib/pgsql/{{ env_type }}/{{ project_name }}/data -R --slot=replica1'
+    become: trueg
+    become_user: postgres
+    when: ansible_default_ipv4.address == "{{ item }}"
+    with_items: "{{ ip_slave }}"
+
+  - name: Enable hot standby
+    lineinfile:
+     path: /var/lib/pgsql/{{ env_type }}/{{ project_name }}/data/postgresql.conf
+     line: 'hot_standby = on'
+    when: ansible_default_ipv4.address == "{{ item }}"
+    with_items: "{{ ip_slave }}"
+
+  - name: start PostgreSQL (slave)
+    service: 
+      name: postgresql-11.service
+      state: started
+    when: ansible_default_ipv4.address == "{{ item }}"
+    with_items: "{{ ip_slave }}"

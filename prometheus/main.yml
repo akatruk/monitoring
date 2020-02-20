@@ -1,0 +1,9 @@
+---
+
+- name: Install prometheus & grafana
+  hosts: monitor01
+  become: yes
+
+  roles: 
+    - preparation
+    - deploy-monitoring

@@ -1,0 +1,41 @@
+---
+
+# - name: open ports 3000, 9090, 9100
+#   shell: firewall-cmd --permanent --add-port={{item}}/tcp
+#   with_items:
+#    - 3000
+#    - 9090
+#    - 9100
+
+# - name: reload firewall
+#   shell: firewall-cmd --reload
+
+# - git:
+#     repo: 'https://github.com/vegasbrianc/prometheus.git'
+#     dest: /srv
+#     update: yes
+
+# - name: put custom config
+#   template: src=git_commit.sh dest=/srv/git_commit.sh backup=yes
+
+# - name: git user.email
+#   shell: git config --global user.email "a.katruk@live.com"
+           
+# - name: git user.name
+#   shell: git config --global user.name "Andrey Katruk"
+
+# - name: x permission
+#   shell: chmod +x /srv/git_commit.sh
+#   become: yes
+
+- name: Creates a cron file under /srv/ autocommit for gitlab monitoring
+  cron:
+    name: autocommit gitlab monitoring
+    weekday: "0"
+    minute: "0"
+    hour: "0,2,4,6,8,10,12,14,16,18,20,22"
+    user: root
+    job: "/srv/git_commit.sh"
+
+# - name: run Docker-compose ansible
+#   shell: docker-compose -f /srv/docker-compose.yml up -d

@@ -1,0 +1,30 @@
+---
+# - name: Include all default extension files in vars/all and all nested directories and save the output in test. (2.2)
+#   include_vars: vars.yml
+
+- name: power off vapp "{{ vm_name }}"
+  vcd_vapp: 
+    vm_name: "{{ item }}"
+    vapp_name: "{{ item }}"
+    vdc: "DATAHUB_DEV_FNFRO003"
+    operation: "poweroff"
+  register: output
+  with_items: "{{ vm_name }}"
+
+- name: power off vapp output
+  debug:
+    msg: '{{ output }}' 
+
+- name: delete off vapp "{{ vm_name }}"
+  vcd_vapp: 
+    vm_name: "{{ item }}"
+    vapp_name: "{{ item }}"
+    vdc: "DATAHUB_DEV_FNFRO003"
+    force: "true"
+    state: "absent"
+  register: output
+  with_items: "{{ vm_name }}"
+
+- name: power off vapp output
+  debug:
+    msg: '{{ output }}' 

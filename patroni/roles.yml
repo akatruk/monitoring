@@ -1,0 +1,14 @@
+---
+
+- name: Install PostgreSQL 
+  hosts: monitor01
+  become: yes
+
+
+  roles:
+     - equipping
+    #  - etcd
+    #  - postgresql
+    #  - haproxy
+    #  - keepalived
+    #  - pgbouncer
