@@ -7,23 +7,6 @@
       - python3-pip
       - git
 
-# - name: Install yum utils
-#   yum:
-#     name: yum-utils¡
-# #     state: latest
-
-#   yum: name={{ item }} state=latest
-#   with_items:
-      # - docker-compose
-      # - python3-pip
-      # - epel-release
-#       - device-mapper-persistent-data
-
-- name: Install device-mapper-persistent-data
-  yum:
-    name: device-mapper-persistent-data
-    state: latest
-
 - name: Add Docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
@@ -59,19 +42,6 @@
     enabled: yes
   become: yes
 
-# - name: Shell 
-#   shell: curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#   become: yes
-
-# - name: grand permissions
-#   shell: chmod +x /usr/local/bin/docker-compose
-#   become: yes
-
-# - name: Install docker
-#   yum: name={{ item }} state=latest
-#   with_items:
-#       - docker
-
 - name: Shell 
   shell: curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   become: yes
@@ -84,75 +54,3 @@
   yum: name={{ item }} state=latest
   with_items:
       - docker-compose
-
-# - name: Install docker-py
-#   pip3: 
-#     name: docker-py
-  # executable: pip3.6
-  # virtualenv_command: /usr/bin/python3
-
-
-# - name: install key
-#   rpm_key:
-#     state: present
-#     key: https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/p/python36-requests-2.14.2-2.el7.noarch.rpm
-#   become: true
-  
-# - name: Install epel-release
-#   yum: name={{ item }} state=latest
-#   with_items:
-#       - epel-release
-#       - yum-utils
-#       - python3-pip
-
-# - name: Add repository
-#   yum_repository:
-#     name: epel
-#     description: EPEL YUM repo
-#     baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-
-# - name: Add Docker repo
-#   get_url:
-#     url: https://download.docker.com/linux/centos/docker-ce.repo
-#     dest: /etc/yum.repos.d/docer-ce.repo
-
-# - name: Enable Docker Edge repo
-#   ini_file:
-#     dest: /etc/yum.repos.d/docer-ce.repo
-#     section: 'docker-ce-edge'
-#     option: enabled
-#     value: 0
-
-# - name: Enable Docker Test repo
-#   ini_file:
-#     dest: /etc/yum.repos.d/docer-ce.repo
-#     section: 'docker-ce-test'
-#     option: enabled
-#     value: 0
-
-# - name: Shell 
-#   shell: curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#   become: yes
-
-# - name: grand permissions
-#   shell: chmod +x /usr/local/bin/docker-compose
-#   become: yes
-
-# - name: Install python-pip
-#   yum: name={{ item }} state=latest
-#   with_items:
-#       - python3-pip
-
-# - name: Install docker
-#   yum: name={{ item }} state=latest
-#   with_items:
-#       - docker
-
-# - name: Install docker-compose
-#   yum: name={{ item }} state=latest
-#   with_items:
-#       - docker-compose
-
-
-
-

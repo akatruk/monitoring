@@ -1,14 +1,14 @@
 ---
 
-- name: Install PostgreSQL 
-  hosts: monitor01
+- name: Install PostgreSQL patroni
+  hosts: patroni
   become: yes
 
 
   roles:
      - equipping
-    #  - etcd
-    #  - postgresql
-    #  - haproxy
-    #  - keepalived
+     - etcd
+     - postgresql
+     - haproxy
+     - keepalived
     #  - pgbouncer

@@ -4,17 +4,17 @@
 ansible_user            : root
 ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub
 
-cname1: x-chkalov-db01
-ip_address1: 10.1.200.13
-cname2: x-chkalov-db02
-ip_address2: 10.1.200.14
-cname3: x-chkalov-db03
-ip_address3: 10.1.200.15
-virtual_ip: 10.1.200.200
+cname1: pgtest01
+ip_address1: 10.1.200.15
+cname2: pgtest02
+ip_address2: 10.1.200.16
+cname3: pgtest03
+ip_address3: 10.1.200.17
+virtual_ip: 10.1.200.201
 network_pg: '10.1.200.0/24'
-cluster_name: xchkalov
+cluster_name: pgtest
 
-hosts: 10.1.200.13:2379, 10.1.200.14:2379, 10.1.200.15:2379
+hosts: 10.1.200.15:2379, 10.1.200.16:2379, 10.1.200.17:2379
 patroni_scope: patroniscope
 
 # ===@@@!!!access to database as postgres user !!!@@@===
@@ -37,7 +37,9 @@ virtual_cpus: 2
 memory: 4096
 Additional_Disk_Size: 10240
 vm_name:
-        - monitor02
+        - pgtest01
+        - pgtest02
+        - pgtest03
 
 # ====== database access throw 6432 pgbouncer port ======
 

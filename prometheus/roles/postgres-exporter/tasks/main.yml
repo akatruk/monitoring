@@ -1,0 +1,10 @@
+---
+# tasks file for postgres-exporter
+- name: open ports 9187
+  shell: firewall-cmd --permanent --add-port=9187/tcp
+
+- name: reload firewall
+  shell: firewall-cmd --reload
+
+- name: run Docker ansible
+  shell: docker run -d --net=host -e DATA_SOURCE_NAME="postgresql://postgres:{{password_postgres}}@{{ansible_default_ipv4.address}}:5432/postgres?sslmode=disable" wrouesnel/postgres_exporter

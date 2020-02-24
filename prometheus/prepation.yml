@@ -5,7 +5,6 @@
   become: yes
 
   tasks:
-  # tasks file for pgbouncer
   - name: Install epel-release
     yum: name={{ item }} state=latest
     with_items:
