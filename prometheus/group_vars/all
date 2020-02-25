@@ -1,5 +1,5 @@
 
 ---
 
-ansible_user            : root
+ansible_user            : mp
 ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub

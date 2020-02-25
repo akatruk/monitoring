@@ -10,22 +10,36 @@
 - name: reload firewall
   shell: firewall-cmd --reload
 
-- git:
-    repo: 'https://github.com/akatruk/monitoring.git'
-    dest: /srv
-    update: yes
+- name: Make DIRs PostgreSQL
+  file:
+    path: /home/mp/git/
+    owner: mp
+    group: mp
+    state: directory
+  become: yes
 
-- name: put custom config
-  template: src=git_commit.sh dest=/srv/prometheus/git_commit.sh backup=yes
+- name: ssh-keyscan
+  shell: ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+  become_user: mp
 
 - name: git user.email
-  shell: git config --global user.email "a.katruk@live.com"
+  shell: git config --global user.email "a.katruk@cometrica.ru"
            
 - name: git user.name
   shell: git config --global user.name "Andrey Katruk"
 
+- name: Clone a private repository into /home/mp 
+  git:
+   repo: git@gitlab.com:cometrica/prosvet/devops.git
+   dest: /home/mp/git/
+   accept_hostkey: yes
+  become_user: mp
+
+- name: put custom config
+  template: src=git_commit.sh dest=/home/mp/git/prometheus/git_commit.sh backup=yes
+
 - name: x permission
-  shell: chmod +x /srv/prometheus/git_commit.sh
+  shell: chmod +x /home/mp/git/prometheus/git_commit.sh
   become: yes
 
 - name: Creates a cron file under /srv/ autocommit for gitlab monitoring
@@ -35,7 +49,9 @@
     minute: "0"
     hour: "2"
     user: root
-    job: "/srv/prometheus/git_commit.sh"
+    job: "/home/mp/git/prometheus/git_commit.sh"
 
 - name: run Docker-compose ansible
-  shell: docker-compose -f /srv/prometheus/docker-compose.yml up -d
+  shell: docker-compose -f /home/mp/git/prometheus/docker-compose.yml up -d
+  become: yes
+  become_user: root
