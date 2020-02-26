@@ -51,7 +51,20 @@
     user: root
     job: "/home/mp/git/prometheus/git_commit.sh"
 
+- debug:
+   msg: AUTOMATIVALY DOESNT WORK docker-compose -f /home/mp/git/prometheus/docker-compose.yml up -d
+
 - name: run Docker-compose ansible
   shell: docker-compose -f /home/mp/git/prometheus/docker-compose.yml up -d
   become: yes
   become_user: root
+  ignore_errors: yes
+
+# - name: Create and start services
+#   docker_compose:
+#     project_src: /home/mp/git/prometheus/docker-compose.yml
+#   register: output
+
+# - name: 11
+#   debug:
+#       msg: "{{ output }}"

@@ -18,7 +18,7 @@ hosts: 10.1.200.15:2379, 10.1.200.16:2379, 10.1.200.17:2379
 patroni_scope: patroniscope
 
 # ===@@@!!!access to database as postgres user !!!@@@===
-password_postgres: OKNceiv09JI3m3o2
+password_postgres: Vfhnvfhn123
 
 # Posgres parameters
 patroni_pg_max_connections: 100

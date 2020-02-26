@@ -8,3 +8,6 @@ monitor02 ansible_ssh_host=10.1.200.14
 pgtest01 ansible_ssh_host=10.1.200.15
 pgtest02 ansible_ssh_host=10.1.200.16
 pgtest03 ansible_ssh_host=10.1.200.17
+
+[ubuntu1]
+LoadBalancer ansible_ssh_host=10.77.150.194
