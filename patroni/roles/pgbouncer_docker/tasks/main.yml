@@ -1,32 +1,70 @@
 ---
 # tasks file for pgbouncer
-- name: Install docker-py
-  pip: 
-    name: docker-py
-  executable: pip3.6
-  virtualenv_command: /usr/bin/python3
+# - name: Install docker-py
+#   pip: 
+#     name: docker-py
+  # executable: pip3.6
+  # virtualenv_command: /usr/bin/python3
 
-- name: Create DATABASE {{database_name}}
-  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE DATABASE {{database_name}};"
-  become_user: postgres
-  run_once: true
+# - name: Create DATABASE {{database_name}}
+#   shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE DATABASE {{database_name}};"
+#   become_user: postgres
+#   run_once: true
 
-- name: Create USER {{user_name}}
-  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE USER {{ user_name }} WITH PASSWORD '{{ password_database }}'"
-  become_user: postgres
-  run_once: true
+# - name: Create USER {{user_name}}
+#   shell: PGPASSWORD={{password_postgres}} psql -p 5000 -h {{virtual_ip}} -U postgres -d postgres -c "CREATE USER {{ user_name }} WITH PASSWORD '{{ password_database }}'"
+#   become_user: postgres
+#   run_once: true
 
-- name: Grant USER {{user_name}}
-  shell: PGPASSWORD={{password_postgres}} psql -p 5000 -Atq -h {{virtual_ip}} -U postgres -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE {{ database_name }} to {{user_name}}"
-  become_user: postgres
-  run_once: true
+# - name: Grant USER {{user_name}}
+#   shell: PGPASSWORD={{password_postgres}} psql -p 5000 -Atq -h {{virtual_ip}} -U postgres -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE {{ database_name }} to {{user_name}}"
+#   become_user: postgres
+#   run_once: true
 
 - name: Install device-mapper-persistent-data
   yum: name={{ item }} state=latest
   with_items:
       - docker
+      - epel-release
       - yum-utils
       - device-mapper-persistent-data
+      - git
+      # - python-pip
+      # - python-psycopg2
+      - gcc
+      # - python
+      # - python-devel
+      # - etcd
+
+# - name: pip update
+#   command: pip install --upgrade pip setuptools wheel
+
+# - name: install python packages
+#   pip: name={{ item }}
+#   with_items:
+#     - python-etcd
+#     - python-consul
+#     - boto
+#     - mock
+#     - kazoo
+#     - click
+#     - tzlocal
+#     - prettytable
+#     - PyYAML
+#     - python-dateutil
+#     - psutil
+#     - patroni
+#     - asn1crypto
+#     - attrs
+#     - Automat
+#     - blinker
+#     - colorama
+#     - constantly
+#     - cryptography
+#     - zipp
+#     - wcwidth
+#     - psycopg2-binary
+#     - py
 
 - name: Add Docker repo
   get_url:
@@ -50,21 +88,27 @@
 - name: Start Docker and Enable as service
   service: name=docker.service state=started enabled=yes
 
-- name: Install bgbouncer container
-  docker_image:
-    name: edoburu/pgbouncer
+# - name: Install bgbouncer container
+#   docker_image:
+#     name: edoburu/pgbouncer
 
-- name: open firewall
-  shell: firewall-cmd --permanent --add-port={{port}}/tcp
+# - name: open firewall
+#   shell: firewall-cmd --permanent --add-port={{port}}/tcp
 
-- name: reload firewall
-  shell: firewall-cmd --reload
+# - name: reload firewall
+#   shell: firewall-cmd --reload
 
-- name: run docker
-  shell: docker run -d --rm  \
-            -e DB_USER={{user_name}} \
-            -e DB_PASSWORD={{password_database}} \
-            -e DB_HOST=postgres-host \
-            -e DB_NAME={{database_name}} \
-            -p {{port}}:5432
-              edoburu/pgbouncer
+# - name: run docker
+#   shell: docker run -d --rm  \
+#             -e DB_USER={{user_name}} \
+#             -e DB_PASSWORD={{password_database}} \
+#             -e DB_HOST=postgres-host \
+#             -e DB_NAME={{database_name}} \
+#             -p {{port}}:5432
+#               edoburu/pgbouncer
+
+# - name: run docker mongos
+#   shell: docker run -d -p 27017:27017  \
+#             -e --configdb=cfgrs/10.1.200.26,10.1.200.27,10.1.200.28 \
+#             -e --bindIp=0.0.0.0 \
+#               mongo

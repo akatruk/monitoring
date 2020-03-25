@@ -1,0 +1,11 @@
+---
+
+    - name: Install mongodb
+      hosts: cfgrs
+      become: yes
+    
+    
+      roles:
+        #  - equipping
+         - ansible-mongodb
+         - mongodb

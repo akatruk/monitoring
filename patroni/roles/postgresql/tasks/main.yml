@@ -60,8 +60,8 @@
     - wcwidth
     - psycopg2-binary
     - py
-  executable: pip3.6
-  virtualenv_command: /usr/bin/python3
+  # executable: pip3.6
+  # virtualenv_command: /usr/bin/python3
 
 - name: put patroni.service systemd unit
   template: src=patroni.service dest=/etc/systemd/system/patroni.service backup=yes

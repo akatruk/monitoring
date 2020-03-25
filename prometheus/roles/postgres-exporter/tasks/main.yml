@@ -7,4 +7,14 @@
   shell: firewall-cmd --reload
 
 - name: run Docker ansible
-  shell: docker run -d --net=host -e DATA_SOURCE_NAME="postgresql://postgres:{{password_postgres}}@{{ansible_default_ipv4.address}}:5432/postgres?sslmode=disable" wrouesnel/postgres_exporter
+  shell: docker run -d --net=host --restart=always -e DATA_SOURCE_NAME="postgresql://postgres:{{password_postgres}}@{{ansible_default_ipv4.address}}:5432/postgres?sslmode=disable" wrouesnel/postgres_exporter
+
+
+
+  docker run -d \
+  --restart=always \
+  --net="host" \
+  --pid="host" \
+  -v "/:/host:ro,rslave" \
+  quay.io/prometheus/node-exporter \
+  --path.rootfs=/host

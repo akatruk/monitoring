@@ -4,24 +4,7 @@
   with_items:
       - epel-release
       - yum-utils
-      # - python-pip
       - git
-
-# - name: Pip install setuptools
-#   pip:
-#     name: setuptools
-#     state: latest
-    # executable: pip3.6
-    
-# - name: Pip install docker
-#   pip:
-#     name: docker
-#     state: latest
-    # executable: pip3.6
-
-# - name: pip update
-#   shell: pip install --upgrade pip
-#   become: yes
 
 - name: Add Docker repo
   get_url:
@@ -64,10 +47,6 @@
 
 - name: grant permissions
   shell: chmod +x /usr/local/bin/docker-compose
-  become: yes
-
-- name: usermod -aG docker mp
-  shell: usermod -aG docker mp
   become: yes
 
 - name: Install docker-compose

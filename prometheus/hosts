@@ -11,3 +11,12 @@ pgtest03 ansible_ssh_host=10.1.200.17
 
 [ubuntu1]
 LoadBalancer ansible_ssh_host=10.77.150.194
+
+[prechkalov]
+pp-db-prechkalov01 ansible_ssh_host=10.1.200.15 ansible_ssh_user=root
+pp-db-prechkalov02 ansible_ssh_host=10.1.200.16 ansible_ssh_user=root
+pp-db-prechkalov03 ansible_ssh_host=10.1.200.17 ansible_ssh_user=root
+
+
+[monitor]
+media-monitor ansible_ssh_host=10.0.0.12

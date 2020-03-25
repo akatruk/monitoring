@@ -1,5 +1,6 @@
 
 ---
 
-ansible_user            : mp
+ansible_user            : root
 ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub
+password_postgres       : 4wKwFfNEfeb4p67k

@@ -8,7 +8,24 @@ x-chkalov-db03 ansible_ssh_host=10.1.200.15
 [monitor01]
 monitor01 ansible_ssh_host=10.1.200.13
 
-[patroni]
-pgtest01 ansible_ssh_host=10.1.200.15
-pgtest02 ansible_ssh_host=10.1.200.16
-pgtest03 ansible_ssh_host=10.1.200.17
+[prechkalov]
+pp-db-prechkalov01 ansible_ssh_host=10.1.200.15
+pp-db-prechkalov02 ansible_ssh_host=10.1.200.16
+pp-db-prechkalov03 ansible_ssh_host=10.1.200.17
+
+[mongodb]
+mongotest01 ansible_ssh_host=10.1.200.18
+mongotest02 ansible_ssh_host=10.1.200.19
+mongotest03 ansible_ssh_host=10.1.200.22
+
+[template]
+template01 ansible_ssh_host=10.1.200.14
+
+[mediateca]
+media-web-01 ansible_port=22 ansible_host=185.232.104.35
+media-web-02 ansible_port=23 ansible_host=185.232.104.35
+media-web-03 ansible_port=24 ansible_host=185.232.104.35
+media-web-05 ansible_port=25 ansible_host=185.232.104.35
+
+
+

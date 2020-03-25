@@ -1,10 +1,20 @@
- route:
-     receiver: 'slack'
-
- receivers:
-     - name: 'slack'
-#       slack_configs:
-#           - send_resolved: true
-#             username: '<username>'
-#             channel: '#<channel-name>'
-#             api_url: '<incomming-webhook-url>'
+---
+    global:
+      resolve_timeout: 5m
+      slack_api_url: https://hooks.slack.com/services/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
+    
+    receivers:
+    - name: devops_alert
+      slack_configs:
+      - channel: '#devops_alert'
+        icon_url: 'https://avatars3.githubusercontent.com/u/3380462'
+        send_resolved: true
+        text: " \\nsummary: {{ .CommonAnnotations.summary }}\\ndescription: {{ .CommonAnnotations.description }}"
+    
+    route: 
+      receiver: devops_alert
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      group_by: [cluster, alertname]
+    

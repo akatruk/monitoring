@@ -1,7 +1,7 @@
 ---
 
 - name: Install prometheus & grafana
-  hosts: monitor01
+  hosts: monitor
   become: yes
 
   roles: 

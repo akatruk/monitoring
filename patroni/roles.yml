@@ -1,14 +1,14 @@
 ---
 
 - name: Install PostgreSQL patroni
-  hosts: patroni
+  hosts: mediateca
   become: yes
 
 
   roles:
-     - equipping
-     - etcd
-     - postgresql
-     - haproxy
-     - keepalived
-    #  - pgbouncer
+    #  - equipping
+    #  - etcd
+    #  - postgresql
+    #  - haproxy
+    #  - keepalived
+     - pgbouncer_docker

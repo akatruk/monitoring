@@ -1,45 +1,45 @@
 ---
 
-- name: open ports 3000, 9090, 9100
-  shell: firewall-cmd --permanent --add-port={{item}}/tcp
-  with_items:
-   - 3000
-   - 9090
-   - 9100
+# - name: open ports 3000, 9090, 9100
+#   shell: firewall-cmd --permanent --add-port={{item}}/tcp
+#   with_items:
+#    - 3000
+#    - 9090
+#    - 9100
 
-- name: reload firewall
-  shell: firewall-cmd --reload
+# - name: reload firewall
+#   shell: firewall-cmd --reload
 
-- name: Make DIRs PostgreSQL
-  file:
-    path: /home/mp/git/
-    owner: mp
-    group: mp
-    state: directory
-  become: yes
+# - name: Make DIRs PostgreSQL
+#   file:
+#     path: /root/
+#     owner: root
+#     group: root
+#     state: directory
+#   become: yes
 
-- name: ssh-keyscan
-  shell: ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
-  become_user: mp
+# - name: ssh-keyscan
+#   shell: ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+#   become_user: root
 
-- name: git user.email
-  shell: git config --global user.email "a.katruk@cometrica.ru"
+# - name: git user.email
+#   shell: git config --global user.email "a.katruk@cometrica.ru"
            
-- name: git user.name
-  shell: git config --global user.name "Andrey Katruk"
+# - name: git user.name
+#   shell: git config --global user.name "Andrey Katruk"
 
-- name: Clone a private repository into /home/mp 
+- name: Clone a private repository into /root 
   git:
    repo: git@gitlab.com:cometrica/prosvet/devops.git
-   dest: /home/mp/git/
+   dest: /root/git/
    accept_hostkey: yes
-  become_user: mp
+  become_user: root
 
 - name: put custom config
-  template: src=git_commit.sh dest=/home/mp/git/prometheus/git_commit.sh backup=yes
+  template: src=git_commit.sh dest=/root/git/git_commit.sh backup=yes
 
 - name: x permission
-  shell: chmod +x /home/mp/git/prometheus/git_commit.sh
+  shell: chmod +x /root/git/git_commit.sh
   become: yes
 
 - name: Creates a cron file under /srv/ autocommit for gitlab monitoring
@@ -49,22 +49,13 @@
     minute: "0"
     hour: "2"
     user: root
-    job: "/home/mp/git/prometheus/git_commit.sh"
+    job: "/root/git/prometheus/git_commit.sh"
 
 - debug:
-   msg: AUTOMATIVALY DOESNT WORK docker-compose -f /home/mp/git/prometheus/docker-compose.yml up -d
+   msg: AUTOMATIVALY DOESNT WORK docker-compose -f /root/git/docker-compose.yml up -d
 
 - name: run Docker-compose ansible
-  shell: docker-compose -f /home/mp/git/prometheus/docker-compose.yml up -d
+  shell: docker-compose -f /root/git/prometheus/docker-compose.yml up -d
   become: yes
   become_user: root
   ignore_errors: yes
-
-# - name: Create and start services
-#   docker_compose:
-#     project_src: /home/mp/git/prometheus/docker-compose.yml
-#   register: output
-
-# - name: 11
-#   debug:
-#       msg: "{{ output }}"
