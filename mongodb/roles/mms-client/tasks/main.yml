@@ -1,0 +1,47 @@
+---
+
+  - name: Stop daemon firewalld
+    systemd:
+     state: stopped
+     name: firewalld
+
+  - name: Download
+    get_url:
+     url: http://{{opsserver}}:8080/download/agent/automation/mongodb-mms-automation-agent-manager-10.2.15.5958-1.x86_64.rhel7.rpm
+     dest: /tmp
+
+  - name: Install
+    yum:
+     name: /tmp/mongodb-mms-automation-agent-manager-10.2.15.5958-1.x86_64.rhel7.rpm
+     state: present
+
+  - name: Configure mmsGroupId
+    lineinfile:
+     path: /etc/mongodb-mms/automation-agent.config
+     regexp: '^mmsGroupId'
+     line: 'mmsGroupId= {{ mmsGroupId }}'
+
+  - name: Configure mmsApiKey 
+    lineinfile:
+     path: /etc/mongodb-mms/automation-agent.config
+     regexp: '^mmsApiKey'
+     line: 'mmsApiKey= {{ mmsApiKey }}'
+
+  - name: Configure mmsBaseUrl
+    lineinfile:
+     path: /etc/mongodb-mms/automation-agent.config
+     regexp: '^mmsBaseUrl'
+     line: 'mmsBaseUrl= {{ mmsBaseUrl }}'
+
+  - name: Make directory
+    file:
+     state: directory
+     owner: mongod
+     group: mongod
+     path: /data/data
+
+  - name: Start daemon mongodb-mms
+    systemd:
+     state: started
+     name: mongodb-mms-automation-agent
+     

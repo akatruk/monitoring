@@ -3,3 +3,7 @@
     ansible_user            : root
     ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub
     
+    mmsGroupId: 5e91b81eaf994e0a72cec642
+    mmsApiKey: 5e91b82daf994e0a72cec668b68ae9b28e9ceffb339234f759c6d82b
+    mmsBaseUrl: http://opsmanager.prosvet.tech:8080
+    opsserver: 10.1.200.19

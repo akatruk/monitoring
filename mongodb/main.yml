@@ -1,11 +1,13 @@
 ---
 
-    - name: Install mongodb
-      hosts: cfgrs
-      become: yes
-    
-    
-      roles:
-        #  - equipping
-         - ansible-mongodb
-         - mongodb
+- name: Install mongodb
+  hosts: mongotest
+  become: yes
+
+
+  roles:
+     - equipping
+    #  - ansible-mongodb
+    #  - mongodb
+    #  - opsmanager
+    #  - mms-client

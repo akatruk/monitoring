@@ -1,0 +1,74 @@
+---
+ - name: Configure the package management system
+   template: src=mongodb-org-4.2.repo.j2 dest=/etc/yum.repos.d/mongodb-org-4.2.repo backup=yes
+ 
+ - name: Install OPS
+   yum: name={{item}} state=latest
+   with_items:
+    - mongodb-org
+    - mongodb-org-shell
+
+ - name: stopped daemon mongod
+   service:
+    name: mongod
+    state: stopped
+ 
+ - name: create dir backup
+   file:
+    state: directory
+    owner: mongod
+    group: mongod
+    path: /data/backup
+
+ - name: create dir appdb
+   file:
+    state: directory
+    owner: mongod
+    group: mongod
+    path: /data/appdb
+    
+ - name: Start mongodb
+   command: mongod --port 27017 --dbpath /data/appdb --logpath /data/appdb/mongodb.log --wiredTigerCacheSizeGB 1 --fork
+   become: mongod
+   register: output
+ 
+ - name: debug
+   debug:
+       msg: "{{ output }}"
+ 
+ - name: install MMS
+   yum:
+    name: https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-4.2.11.56841.20200401T1835Z-1.x86_64.rpm
+    state: present
+
+ - name: start daemon mongodb-mms
+   service:
+    name: mongodb-mms
+    state: started
+   register: output
+ 
+ - name: debug
+   debug:
+       msg: "{{ output }}"
+
+ - name: Start mongodb
+   command: service mongodb-mms start
+   become: yes
+   register: output
+ 
+ - name: debug
+   debug:
+      msg: "{{ output }}"
+
+ - name:
+   firewalld:
+    port: 8080/tcp
+    permanent: yes
+    state: enabled
+    
+ - name: create dir headdb
+   file:
+    state: directory
+    owner: mongodb-mms
+    group: mongodb-mms
+    path: /data/headdb

@@ -1,7 +1,7 @@
 ---
 
 - name: Install PostgreSQL patroni
-  hosts: mediateca
+  hosts: pgtest
   become: yes
 
 
@@ -11,4 +11,5 @@
     #  - postgresql
     #  - haproxy
     #  - keepalived
-     - pgbouncer_docker
+     - barman_client
+    #  - barman_server

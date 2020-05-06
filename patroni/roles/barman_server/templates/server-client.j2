@@ -1,0 +1,24 @@
+[db1]
+ssh_command = ssh postgres@10.1.200.22
+conninfo = host=10.1.200.22 user=barman port=5432
+backup_options = concurrent_backup ; 
+backup_method = rsync ;
+archiver = on ; 
+streaming_archiver = on ; 
+slot_name = barman ; 
+
+
+[pgdb]
+description="Main PostgreSQL server"
+conninfo=host=pgserver user=postgres dbname=postgres
+ssh_command=ssh barman@pgserver
+archiver=on
+backup_method = rsync
+
+
+[pgdb]
+description="Main PostgreSQL server"
+conninfo=host=pgserver user=barman dbname=ttt111
+ssh_command=ssh barman@10.1.200.22
+archiver=on
+backup_method = rsync

@@ -1,0 +1,38 @@
+---
+
+- name: Install barman server
+  yum:
+    name: https://sourceforge.net/projects/pgbarman/files/2.10/barman-2.10-2.el7.noarch.rpm/download
+    state: present
+
+# - name: download barman client
+#   yum:
+#     name: https://sourceforge.net/projects/pgbarman/files/2.10/barman-cli-2.10-2.el7.noarch.rpm/download
+#     state: present
+- name: copy ssh key
+
+- name: Install barman python
+  yum:
+    name: https://sourceforge.net/projects/pgbarman/files/2.10/python-barman-2.10-2.el7.noarch.rpm/download
+    state: present
+  
+- name: put main config
+  template: src=barman.conf.j2 dest=/etc/barman.conf backup=yes
+
+- name: put client config
+  template: src=server-client.j2 dest=/etc/barman.d/test.conf backup=yes
+
+# - name: Download repository
+#   get_url:
+#     url: https://sourceforge.net/projects/pgbarman/files/2.10/barman-2.10-2.el7.noarch.rpm/download
+#     dest: /root
+#     mode: '0700'
+
+
+# - name: run script
+#   shell: rpm >> somelog.txt
+#   args:
+#      chdir: /root
+#      creates: somelog.txt
+#   become: root
+

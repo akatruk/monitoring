@@ -11,9 +11,9 @@
 - name: Install PostgreSQL & python
   yum: name={{ item }} state=latest
   with_items:
-    - postgresql11
-    - postgresql11-server
-    - postgresql11-contrib
+    - postgresql12
+    - postgresql12-server
+    - postgresql12-contrib
     - git
     - python-pip
     - python-psycopg2
@@ -32,7 +32,7 @@
   template: src=postgres0.yml dest=/etc/patroni/postgres.yml backup=yes
 
 - name: pip update
-  command: pip install --upgrade pip setuptools wheel
+  command: pip install --upgrade pip
 
 - name: install python packages
   pip: name={{ item }}
@@ -60,17 +60,9 @@
     - wcwidth
     - psycopg2-binary
     - py
-  # executable: pip3.6
-  # virtualenv_command: /usr/bin/python3
 
 - name: put patroni.service systemd unit
   template: src=patroni.service dest=/etc/systemd/system/patroni.service backup=yes
-
-# - name: open firewall
-#   shell: firewall-cmd --permanent --add-port=5432/tcp
-
-# - name: reload firewall
-#   shell: firewall-cmd --reload
 
 - name: Start etcd and Enable as service
   service: name=etcd.service state=started enabled=yes

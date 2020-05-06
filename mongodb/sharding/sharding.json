@@ -5,21 +5,23 @@
 rs.initiate( {
     _id : "cfgrs",
     members: [
-       { _id: 0, host: "10.1.200.18:27017" },
-       { _id: 1, host: "10.1.200.19:27017" },
-       { _id: 2, host: "10.1.200.22:27017" }
+       { _id: 0, host: "cfgsvr1:27017" },
+       { _id: 1, host: "cfgsvr2:27017" },
+       { _id: 2, host: "cfgsvr3:27017" }
     ]
  })
- mongo 'mongodb://10.1.200.18,10.1.200.19,10.1.200.22/?replicaSet=cfgrs'
+ 
+ mongo 'mongodb://cfgrs01:40001,cfgrs01:40002,cfgrs01:40003/?replicaSet=cfgrs'
  
  rs.initiate( {
     _id : "shard1rs",
     members: [
-       { _id: 0, host: "10.1.200.26:27017" },
-       { _id: 1, host: "10.1.200.27:27017" },
-       { _id: 2, host: "10.1.200.28:27017" }
+       { _id: 0, host: "shard1svr1:27017" },
+       { _id: 1, host: "shard1svr2:27017" },
+       { _id: 2, host: "shard1svr3:27017" }
     ]
  })
+ 
  mongo 'mongodb://10.1.200.26,10.1.200.27,10.1.200.28/?replicaSet=shard1rs'
  cfgrs/10.1.200.26,10.1.200.27,10.1.200.28
 sh.addShard("shard1rs/10.1.200.26:27017,10.1.200.27:27017,10.1.200.28:27017")
@@ -34,4 +36,16 @@ sh.addShard("shard1rs/10.1.200.26:27017,10.1.200.27:27017,10.1.200.28:27017")
  })
  mongo 'mongodb://10.1.200.29,10.1.200.30,10.1.200.31/?replicaSet=cfgrs'shard2rs'
 
- 
+ rs.initiate(
+  {
+    _id: "cfgrs",
+    configsvr: true,
+    members: [
+      { _id : 0, host : "10.1.200.18:40001" },
+      { _id : 1, host : "10.1.200.18:40002" },
+      { _id : 2, host : "10.1.200.18:40003" }
+    ]
+  }
+)
+
+rs.status()

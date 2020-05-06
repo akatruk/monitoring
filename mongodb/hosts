@@ -16,3 +16,13 @@ mongos01 ansible_ssh_host=10.1.200.14
 mongoprod01 ansible_ssh_host=95.163.208.50
 mongoprod02 ansible_ssh_host=95.163.182.121
 mongoprod03 ansible_ssh_host=89.208.229.219
+
+[ops]
+ops ansible_ssh_host=10.1.200.19
+
+[mongotest]
+mongodb05 ansible_ssh_host=10.1.200.28
+mongodb04 ansible_ssh_host=10.1.200.27
+d-dh-db01 ansible_ssh_host=10.1.200.18
+mongodb01 ansible_ssh_host=10.1.200.26
+mongodb02 ansible_ssh_host=10.1.200.22

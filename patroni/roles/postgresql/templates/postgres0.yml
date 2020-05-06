@@ -56,7 +56,7 @@ postgresql:
   custom_conf: {{ patroni_custom_conf }}
 {% endif %}
   data_dir: /var/lib/pgsql/data/patronictl/
-  bin_dir: /usr/pgsql-11/bin
+  bin_dir: /usr/pgsql-12/bin
   pgpass: /tmp/pgpass0
   authentication:
     replication:
