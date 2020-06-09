@@ -9,7 +9,7 @@
 #   yum:
 #     name: https://sourceforge.net/projects/pgbarman/files/2.10/barman-cli-2.10-2.el7.noarch.rpm/download
 #     state: present
-- name: copy ssh key
+# - name: copy ssh key
 
 - name: Install barman python
   yum:

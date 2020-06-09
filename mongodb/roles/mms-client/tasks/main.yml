@@ -6,13 +6,12 @@
      name: firewalld
 
   - name: Download
-    get_url:
-     url: http://{{opsserver}}:8080/download/agent/automation/mongodb-mms-automation-agent-manager-10.2.15.5958-1.x86_64.rhel7.rpm
-     dest: /tmp
+    command: curl -OL http://M1MDMPLMO01:8080/download/agent/automation/mongodb-mms-automation-agent-manager-10.2.17.5970-1.x86_64.rhel7.rpm
+    #  dest: /tmp
 
   - name: Install
     yum:
-     name: /tmp/mongodb-mms-automation-agent-manager-10.2.15.5958-1.x86_64.rhel7.rpm
+     name: http://M1MDMPLMO01:8080/download/agent/automation/mongodb-mms-automation-agent-manager-10.2.17.5970-1.x86_64.rhel7.rpm
      state: present
 
   - name: Configure mmsGroupId

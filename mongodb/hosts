@@ -26,3 +26,16 @@ mongodb04 ansible_ssh_host=10.1.200.27
 d-dh-db01 ansible_ssh_host=10.1.200.18
 mongodb01 ansible_ssh_host=10.1.200.26
 mongodb02 ansible_ssh_host=10.1.200.22
+
+[opsmanager]
+opsmanager ansible_ssh_host=10.10.5.2
+
+[mongo-mms]
+mongo1 ansible_ssh_host=10.10.5.3
+mongo8 ansible_ssh_host=10.10.5.4
+mongo2 ansible_ssh_host=10.10.5.5
+mongo3 ansible_ssh_host=10.10.5.6
+mongo4 ansible_ssh_host=10.10.5.7
+mongo5 ansible_ssh_host=10.10.5.8
+mongo6 ansible_ssh_host=10.10.5.9
+mongo7 ansible_ssh_host=10.10.5.10

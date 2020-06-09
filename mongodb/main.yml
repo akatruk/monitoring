@@ -1,13 +1,13 @@
 ---
 
 - name: Install mongodb
-  hosts: mongotest
+  hosts: mongo-mms
   become: yes
 
 
   roles:
-     - equipping
+    #  - equipping
     #  - ansible-mongodb
     #  - mongodb
     #  - opsmanager
-    #  - mms-client
+     - mms-client

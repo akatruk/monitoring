@@ -1,9 +1,9 @@
 ---
 
-    ansible_user            : root
+    ansible_user            : katruk
     ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub
     
-    mmsGroupId: 5e91b81eaf994e0a72cec642
-    mmsApiKey: 5e91b82daf994e0a72cec668b68ae9b28e9ceffb339234f759c6d82b
-    mmsBaseUrl: http://opsmanager.prosvet.tech:8080
-    opsserver: 10.1.200.19
+    mmsGroupId: 5ecc164f2cd20a137648dd8d
+    mmsApiKey: 5ecc16d42cd20a137648ded09a571076ffa2e34fd75f17446725669a
+    mmsBaseUrl: http://M1MDMPLMO01:8080
+    opsserver: 10.10.5.2

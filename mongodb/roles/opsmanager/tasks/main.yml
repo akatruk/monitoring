@@ -1,4 +1,31 @@
 ---
+#  - name: Lynis | add repo
+#    copy:
+#      src: lynis.repo
+#      dest: /etc/yum.repos.d/
+#      owner: root
+#      group: root
+#      mode: '0644'   
+
+#  - name: Lynis | install
+#    yum:
+#      name: lynis
+#      update_cache: yes
+#      state: latest
+
+#  - name: Lynis | pentest
+#    shell:
+#      cmd: lynis --pentest
+
+#  - name: Lynis | report suggestions
+#    shell: "grep 'suggestion' {{ lynis_report }}"
+#    register: grep_output
+#    ignore_errors: true
+
+#  - debug:
+#      var: grep_output.stdout_lines
+#     when: grep_output.stdout != ""  
+
  - name: Configure the package management system
    template: src=mongodb-org-4.2.repo.j2 dest=/etc/yum.repos.d/mongodb-org-4.2.repo backup=yes
  
@@ -26,39 +53,51 @@
     owner: mongod
     group: mongod
     path: /data/appdb
-    
+
+ - name: firewall
+   firewalld:
+     port: 8080/tcp
+     permanent: yes
+     state: enabled
+      
+ - name: create dir headdb
+   file:
+     state: directory
+     owner: mongodb-mms
+     group: mongodb-mms
+     path: /data/headdb
+
  - name: Start mongodb
    command: mongod --port 27017 --dbpath /data/appdb --logpath /data/appdb/mongodb.log --wiredTigerCacheSizeGB 1 --fork
    become: mongod
-   register: output
  
- - name: debug
-   debug:
-       msg: "{{ output }}"
+#  - name: debug
+#    debug:
+#        msg: "{{ output }}"
  
- - name: install MMS
-   yum:
-    name: https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-4.2.11.56841.20200401T1835Z-1.x86_64.rpm
-    state: present
+#  - name: install MMS
+#    yum:
+#     name: https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-4.2.11.56841.20200401T1835Z-1.x86_64.rpm
+#     state: present
 
- - name: start daemon mongodb-mms
-   service:
-    name: mongodb-mms
-    state: started
-   register: output
+#  - name: start daemon mongodb-mms
+#    service:
+#     name: mongodb-mms
+#     state: started
+#    register: output
  
- - name: debug
-   debug:
-       msg: "{{ output }}"
+#  - name: debug
+#    debug:
+#        msg: "{{ output }}"
 
- - name: Start mongodb
-   command: service mongodb-mms start
-   become: yes
-   register: output
+#  - name: Start mongodb
+#    command: service mongodb-mms start
+#    become: yes
+#    register: output
  
- - name: debug
-   debug:
-      msg: "{{ output }}"
+#  - name: debug
+#    debug:
+#       msg: "{{ output }}"
 
  - name:
    firewalld:

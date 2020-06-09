@@ -1,4 +1,30 @@
 ---
+- name: Lynis | add repo
+  copy:
+    src: lynis.repo
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: '0644'   
+
+- name: Lynis | install
+  yum:
+    name: lynis
+    update_cache: yes
+    state: latest
+
+- name: Lynis | pentest
+  shell:
+    cmd: lynis --pentest
+
+- name: Lynis | report suggestions
+  shell: "grep 'suggestion' {{ lynis_report }}"
+  register: grep_output
+  ignore_errors: true
+
+- debug:
+    var: grep_output.stdout_lines
+  when: grep_output.stdout != ""  
 
 - name: Install epel-release
   yum: name=epel-release state=latest
@@ -15,9 +41,9 @@
 - name: install mongodb
   yum: name=mongodb-org state=latest
 
-- name: Disable SELinux
-  selinux:
-    state: disabled
+# - name: Disable SELinux
+#   selinux:
+#     state: disabled
 
 # - name: Configure the package management system with replica
 #   template: src=mongod.conf1.j2 dest=/etc/mongod.conf backup=yes

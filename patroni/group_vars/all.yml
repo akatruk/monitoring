@@ -1,7 +1,10 @@
 
 ---
+# ===@@@!!!PCI DSS vars!!!@@@===
+lspadmin_password: Cdgbcdgb1@3
 
-ansible_user            : root
+# ===@@@!!!patroni vars!!!@@@===
+ansible_user            : katruk
 ansible_ssh_private_key : /Users/akatruk/.ssh/id_rsa.pub
 
 cname1: pg01
@@ -24,7 +27,7 @@ password_postgres: 4wKwFfNEfeb4p67k
 patroni_pg_max_connections: 30
 shared_buffers: 512MB
 work_mem: 128MB
-effective_cash_size: 1536MB
+effective_cache_size: 1536MB
 
 # ====== vars VM deploy ======
 

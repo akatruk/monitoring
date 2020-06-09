@@ -1,7 +1,7 @@
 ---
 
 - name: Install PostgreSQL patroni
-  hosts: pgtest
+  hosts: barmans
   become: yes
 
 
@@ -11,5 +11,7 @@
     #  - postgresql
     #  - haproxy
     #  - keepalived
-     - barman_client
-    #  - barman_server
+    #  - barman_client
+     - barman_server
+    #  - postgresql_standalone
+    #  - pci_dss
