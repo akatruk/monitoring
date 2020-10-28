@@ -1,61 +1,69 @@
 ---
 
-- name: Install epel-release
-  yum: name=epel-release state=latest
+# - name: Install epel-release
+#   yum: 
+#     name: epel-release 
 
-- name: Install  python
-  yum: name=python-pip state=latest
+# - name: Install  python
+#   yum: 
+#     name: python-pip 
 
-- name: install python packages
-  pip: name=pymongo
+# - name: open firewall 27017
+#   shell: firewall-cmd --permanent --add-port={{item}}/tcp
+#   with_items:
+#    - 27017
 
-- name: Configure the package management system
-  template: src=mongodb-org-4.2.repo.j2 dest=/etc/yum.repos.d/mongodb-org-4.2.repo backup=yes
+# - name: reload firewall
+#   shell: firewall-cmd --reload
 
-- name: install mongodb
-  yum: name=mongodb-org state=latest
+# - name: install pymongo
+#   yum: 
+#     name: pymongo
 
-- name: Disable SELinux
-  selinux:
-    state: disabled
+# - name: Configure the package management system
+#   template: 
+#     src: mongodb-org-4.2.repo.j2 
+#     dest: /etc/yum.repos.d/mongodb-org-4.2.repo 
+#     backup: yes
+
+# - name: install mongodb
+#   yum: 
+#     name: mongodb-org 
+#     state: latest
 
 # - name: Configure the package management system with replica
-#   template: src=mongod.conf1.j2 dest=/etc/mongod.conf backup=yes
+#   template: 
+#     src: mongod.conf.j2 
+#     dest: /etc/mongod.conf 
+#     backup: yes
 
 # - name: start service mongod
 #   service: 
 #    name: mongod.service
 #    state: started
-
-# - name: add usr
-#   mongodb_user:
-#     database: admin
-#     name: useradmin
-#     roles: userAdminAnyDatabase
-#     password: 12345DB
-#     state: present
   
-- name: Configure key
+- name: copy initRS script
   template:
-    src: keyfile.j2 
-    dest: /var/lib/mongo/keyfile 
-    backup: yes
+    src: roles/mongodb/templates/initRS.j2
+    dest: /tmp/initRS.js
     owner: mongod
     group: mongod
-    mode: 0600
 
-- name: Configure the package management system with replica
-  template: src=mongod.conf.j2 dest=/etc/mongod.conf backup=yes force=yes  
+- name: initiate replica set from first primary
+  shell: mongo < /tmp/initRS.js
 
-- name: start service mongod
-  service: 
-   name: mongod.service
-   state: started
+- name: Copy keyfile for replica
+  template:
+    srv: roles/mongodb/templates/keyFile.j2
+    dest: /var/lib/mongo/keyFile
+    mode: 600
+    owner: mongod
+    group: mongod
 
-- name: open firewall 27017
-  shell: firewall-cmd --permanent --add-port={{item}}/tcp
-  with_items:
-   - 27017
+- name: grant permission for keyFile
+  shell: chcon system_u:object_r:mongod_var_lib_t:s0 /var/lib/mongo/keyFile
 
-- name: reload firewall
-  shell: firewall-cmd --reload
+- name: Restart service mongodb
+  service:
+    name: mongod
+    state: restarted

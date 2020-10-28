@@ -19,12 +19,13 @@ var conf = {
 rs.initiate(conf)
 
 
+
 rs.initiate( {
     _id : "rs0",
     members: [
-       { _id: 0, host: "10.0.22.16:27017" },
-       { _id: 1, host: "10.0.22.14:27017" },
-       { _id: 2, host: "10.0.22.13:27017" }
+       { _id: 0, host: "10.1.200.18:27017" },
+       { _id: 1, host: "10.1.200.19:27017" },
+       { _id: 2, host: "10.1.200.22:27017" }
     ]
  })
  
@@ -34,7 +35,7 @@ use admin
 db.createUser({user:"admin", pwd:"Vfhnvfhn123", roles:[{role:"root", db:"admin"}]})
 
 
-mongo 'mongodb://10.0.22.13,10.0.22.14,10.0.22.16/?replicaSet=rs0' -u admin
+mongo 'mongodb://10.1.200.18:40001,10.1.200.18:40002,10.1.200.18:40003/?replicaSet=cfgrs'
 
 mongo 'mongodb://10.1.200.18,10.1.200.19,10.1.200.22/?replicaSet=cfgrs'
 

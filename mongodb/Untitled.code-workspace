@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "/Users/akatruk/Documents/monitoring/prometheus"
+		},
+		{
+			"path": "/Users/akatruk/Documents/monitoring/patroni"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/akatruk/Documents/monitoring/ansible"
+		}
+	],
+	"settings": {}
+}
